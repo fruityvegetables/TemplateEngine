@@ -9,8 +9,8 @@ class Intern extends Employee {
     getRole() {
         return "Intern";
     }
-    getGithub() {
-        return this.github;
+    getSchool() {
+        return this.school;
     }
 }
 

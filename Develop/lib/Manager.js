@@ -1,17 +1,17 @@
 // TODO: Write code to define and export the Employee class
 const Employee = require("./Employee");
-class Intern extends Employee {
-    constructor(name, id, email, school){
+class Manager extends Employee {
+    constructor(name, id, email, officeNumber){
         super(name, id, email);
-        this.school = school;
+        this.officeNumber = officeNumber;
 
     }
     getRole() {
-        return "Intern";
+        return "Manager";
     }
-    getSchool() {
-        return this.school;
+    getOfficeNumber() {
+        return this.officeNumber;
     }
 }
 
-module.exports = Intern;
+module.exports = Manager;

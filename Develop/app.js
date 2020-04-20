@@ -10,9 +10,36 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 ​
 const render = require("./lib/htmlRenderer");
 
-​
-​//functions
-createManager(){
+​//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+​//functions~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+function startPrompt(){
+    //prompt the user with what kind of employee to create
+    return inquirer
+    .prompt({
+        type: "list",
+        message: "Which type of team member would you like to add?",
+        name: "role",
+        choices: [
+            "Manager",
+            "Engineer",
+            "Intern"
+        ]
+    })
+    // if("manager"){
+    //     createManager();
+    // } else if ("engineer"){
+    //     createEngineer();
+    // } else {
+    //     createIntern();
+    //     return;
+    // }
+}
+
+function createManager(){
     return inquirer
     .prompt([
         {
@@ -42,9 +69,9 @@ createManager(){
         }
     ])
 
-}
+};
 
-createEngineer(){
+function createEngineer(){
     return inquirer
     .prompt([
         {
@@ -74,9 +101,9 @@ createEngineer(){
         }
     ])
 
-}
+};
 
-createIntern(){
+function createIntern(){
     return inquirer
     .prompt([
         {
@@ -106,31 +133,70 @@ createIntern(){
         }
     ])
 
+};
+
+function againPrompt(){
+    return inquirer.prompt([
+        {
+            type:"list",
+            message:"Would you like to add another employee?: ",
+            choices:['Yes',"No"],
+            name:"confirm"
+        }
+
+    ]);
 }
 
-startApp(){
-    //prompt the user with what kind of employee to create
-    return inquirer
-    .prompt({
-        type: "list",
-        message: "Which type of team member would you like to add?",
-        name: "role",
-        choice: [
-            "Manager",
-            "Engineer",
-            "Intern"
-        ]
-    })
-    if("manager"){
-        createManager();
-    } else if ("engineer"){
-        createEngineer();
-    } else {
-        createIntern();
-        return;
+async function startApp(){
+    const employees = [];
+    let firstStart = true;
+    do {
+        if(!firstStart){
+            type = await startPrompt();
+        } else {
+            firstStart = false;
+            type = {role:"Manager"}
+        }
+
+        let data = await createManager();
+
+        switch(type.role){
+            case 'Manager':
+                employees.push(new Manager(data.name, data.id, data.email, data.github, data.imgUrl));
+                break;
+            case 'Engineer':
+                employees.push(new Engineer(data.name, data.id, data.email, data.phoneNumber, data.imgUrl));
+                break;
+            case 'Intern':
+                employees.push(new Intern(data.name, data.id, data.email, data.school, data.imgUrl));
+                break; 
+        }
+
+        var createMore = await againPrompt();
+    } while (createMore.confirm!= "No");
+    const html = render(employees);
+    console.log(html);
+    try{
+        if (!fs.existsSync(OUTPUT_DIR)) {
+            fs.mkdirSync(OUTPUT_DIR);
+        }
     }
+    catch(err){
+        return console.log(err);
+    }
+    fs.writeFile(outputPath, html, function(err){
+        if (err){
+            return console.log(err)
+        }
+        console.log("Wrote to a file called team.html!");
+    })
 }
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+startApp();
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)

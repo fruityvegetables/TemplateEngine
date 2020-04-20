@@ -7,6 +7,7 @@ const fs = require("fs");
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
+
 function startPrompt(){
     //prompt the user with what kind of employee to create
     return inquirer
@@ -50,7 +51,7 @@ function createManager(){
         {
             type: "number",
             message: "Enter the phone for the manager: ",
-            name: "phoneNumber"
+            name: "phoneOfficeNumber"
         },
         {
             type: "input",
@@ -144,12 +145,13 @@ async function startApp(){
             type = {role:"Manager"}
         }
         let data = await createManager();
+
         switch(type.role){
             case 'Manager':
-                employees.push(new Manager(data.name, data.id, data.email, data.github, data.imgUrl));
+                employees.push(new Manager(data.name, data.id, data.email, data.phoneOfficeNumber, data.imgUrl));
                 break;
             case 'Engineer':
-                employees.push(new Engineer(data.name, data.id, data.email, data.phoneNumber, data.imgUrl));
+                employees.push(new Engineer(data.name, data.id, data.email, data.github, data.imgUrl));
                 break;
             case 'Intern':
                 employees.push(new Intern(data.name, data.id, data.email, data.school, data.imgUrl));
@@ -158,7 +160,7 @@ async function startApp(){
         var createMore = await againPrompt();
     } while (createMore.confirm!= "No");
     const html = render(employees);
-    console.log(html);
+    //console.log(html);
     try{
         if (!fs.existsSync(OUTPUT_DIR)) {
             fs.mkdirSync(OUTPUT_DIR);

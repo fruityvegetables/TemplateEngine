@@ -9,28 +9,124 @@ const OUTPUT_DIR = path.resolve(__dirname, "output")
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 ​
 const render = require("./lib/htmlRenderer");
+
 ​
 ​//functions
 createManager(){
+    return inquirer
+    .prompt([
+        {
+            type: "input",
+            message: "Enter the name of the manager: ",
+            name: "name"    
+        },
+        {
+            type: "number",
+            message: "Enter the ID for the manager: ",
+            name: "id"
+        },
+        {
+            type: "input",
+            message: "Enter the email for the manager: ",
+            name: "email"
+        },
+        {
+            type: "number",
+            message: "Enter the phone for the manager: ",
+            name: "phoneNumber"
+        },
+        {
+            type: "input",
+            message: "Enter an image url for the manager: ",
+            name: "imageUrl"
+        }
+    ])
 
 }
 
 createEngineer(){
+    return inquirer
+    .prompt([
+        {
+            type: "input",
+            message: "Enter the name of the engineer: ",
+            name: "name"
+        },
+        {
+            type: "number",
+            message: "Enter the ID for the engineer: ",
+            name: "id"
+        },
+        {
+            type: "input",
+            message: "Enter the email for the engineer: ",
+            name: "email"
+        },
+        {
+            type: "input",
+            message: "Enter the GitHub username for the engineer: ",
+            name: "github"
+        },
+        {
+            type: "input",
+            message: "Enter an image url for the engineer: ",
+            name: "imageUrl"
+        }
+    ])
 
 }
 
 createIntern(){
+    return inquirer
+    .prompt([
+        {
+            type: "input",
+            message: "Enter the name of the intern: ",
+            name: "name"
+        },
+        {
+            type: "number",
+            message: "Enter the ID of the intern: ",
+            name: "id"
+        },
+        {
+            type: "input",
+            message: "Enter the email of the intern: ",
+            name: "email"
+        },
+        {
+            type: "input",
+            message: "Enter the school of the intern: ",
+            name: "school"
+        },
+        {
+            type: "input",
+            message: "Enter an image url for the intern: ",
+            name: "imageUrl"
+        }
+    ])
 
 }
 
 startApp(){
     //prompt the user with what kind of employee to create
+    return inquirer
+    .prompt({
+        type: "list",
+        message: "Which type of team member would you like to add?",
+        name: "role",
+        choice: [
+            "Manager",
+            "Engineer",
+            "Intern"
+        ]
+    })
     if("manager"){
         createManager();
     } else if ("engineer"){
-
+        createEngineer();
     } else {
-        console.log("wtf?");
+        createIntern();
         return;
     }
 }

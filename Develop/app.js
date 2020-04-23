@@ -30,48 +30,54 @@ function startPrompt(){
     //     return;
     // }
 }
-function createManager(type){
+function createEmployee(type){
     console.log(type);
     if (type.role === "Manager"){
-        return inquirer
-        .prompt([
-            {
-                message: "Hello! The first card to fill out will be presented as a manager! Fill it out with your information.",
-                name: "start"
-            },
-            {
-                type: "input",
-                message: "Enter the name of the manager: ",
-                name: "name"    
-            },
-            {
-                type: "number",
-                message: "Enter the ID for the manager: ",
-                name: "id"
-            },
-            {
-                type: "input",
-                message: "Enter the email for the manager: ",
-                name: "email"
-            },
-            {
-                type: "input",
-                message: "Enter an image url for the manager: ",
-                name: "imageUrl"
-            },
-            {
-                type: "number",
-                message: "Enter the office phone number for the manager: ",
-                name: "phoneOfficeNumber"
-            }
-    
-        ])
-    
+        return createManager();
     } else if (type.role === "Engineer") {
         return createEngineer();
+    } else if (type.role === "Intern") {
+        return createIntern();
+    } else {
+        return;
     }
     
 };
+function createManager() {
+    return inquirer
+    .prompt([
+        {
+            message: "Hello! The first card to fill out will be presented as a manager! Fill it out with your information.",
+            name: "start"
+        },
+        {
+            type: "input",
+            message: "Enter the name of the manager: ",
+            name: "name"    
+        },
+        {
+            type: "number",
+            message: "Enter the ID for the manager: ",
+            name: "id"
+        },
+        {
+            type: "input",
+            message: "Enter the email for the manager: ",
+            name: "email"
+        },
+        {
+            type: "input",
+            message: "Enter an image url for the manager: ",
+            name: "imageUrl"
+        },
+        {
+            type: "number",
+            message: "Enter the office phone number for the manager: ",
+            name: "phoneOfficeNumber"
+        }
+
+    ])
+}
 function createEngineer(){
     return inquirer
     .prompt([
@@ -155,7 +161,7 @@ async function startApp(){
             firstStart = false;
             type = {role:"Manager"}
         }
-        let data = await createManager(type);
+        let data = await createEmployee(type);
 
         console.log("superfun", data);
         switch(type.role){

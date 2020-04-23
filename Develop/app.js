@@ -30,114 +30,110 @@ function startPrompt(){
     //     return;
     // }
 }
-function createEmployee(){
+function createManager(type){
+    console.log(type);
+    if (type.role === "Manager"){
+        return inquirer
+        .prompt([
+            {
+                message: "Hello! The first card to fill out will be presented as a manager! Fill it out with your information.",
+                name: "start"
+            },
+            {
+                type: "input",
+                message: "Enter the name of the manager: ",
+                name: "name"    
+            },
+            {
+                type: "number",
+                message: "Enter the ID for the manager: ",
+                name: "id"
+            },
+            {
+                type: "input",
+                message: "Enter the email for the manager: ",
+                name: "email"
+            },
+            {
+                type: "input",
+                message: "Enter an image url for the manager: ",
+                name: "imageUrl"
+            },
+            {
+                type: "number",
+                message: "Enter the office phone number for the manager: ",
+                name: "phoneOfficeNumber"
+            }
+    
+        ])
+    
+    } else if (type.role === "Engineer") {
+        return createEngineer();
+    }
+    
+};
+function createEngineer(){
     return inquirer
     .prompt([
         {
-            message: "Hello! The first card to fill out will be presented as a manager! Fill it out with your information.",
-            name: "start"
-        },
-        {
             type: "input",
-            message: "Enter the name of the employee: ",
-            name: "name"    
+            message: "Enter the name of the engineer: ",
+            name: "name"
         },
         {
             type: "number",
-            message: "Enter the ID for the employee: ",
+            message: "Enter the ID for the engineer: ",
             name: "id"
         },
         {
             type: "input",
-            message: "Enter the email for the employee: ",
+            message: "Enter the email for the engineer: ",
             name: "email"
         },
         {
             type: "input",
-            message: "Enter an image url for the employee: ",
-            name: "imageUrl"
-        },
-        {
-            type: "number",
-            message: "Enter the office phone number if it's a manager: ",
-            name: "phoneOfficeNumber"
-        },
-        {
-            type: "input",
-            message: "Enter the GitHub username if it's an engineer: ",
+            message: "Enter the GitHub username for the engineer: ",
             name: "github"
         },
         {
             type: "input",
-            message: "Enter the school if it's an intern: ",
-            name: "school"
+            message: "Enter an image url for the engineer: ",
+            name: "imageUrl"
         }
-
     ])
 
 };
-// function createEngineer(){
-//     return inquirer
-//     .prompt([
-//         {
-//             type: "input",
-//             message: "Enter the name of the engineer: ",
-//             name: "name"
-//         },
-//         {
-//             type: "number",
-//             message: "Enter the ID for the engineer: ",
-//             name: "id"
-//         },
-//         {
-//             type: "input",
-//             message: "Enter the email for the engineer: ",
-//             name: "email"
-//         },
-//         {
-//             type: "input",
-//             message: "Enter the GitHub username for the engineer: ",
-//             name: "github"
-//         },
-//         {
-//             type: "input",
-//             message: "Enter an image url for the engineer: ",
-//             name: "imageUrl"
-//         }
-//     ])
+function createIntern(){
+    return inquirer
+    .prompt([
+        {
+            type: "input",
+            message: "Enter the name of the intern: ",
+            name: "name"
+        },
+        {
+            type: "number",
+            message: "Enter the ID of the intern: ",
+            name: "id"
+        },
+        {
+            type: "input",
+            message: "Enter the email of the intern: ",
+            name: "email"
+        },
+        {
+            type: "input",
+            message: "Enter the school of the intern: ",
+            name: "school"
+        },
+        {
+            type: "input",
+            message: "Enter an image url for the intern: ",
+            name: "imageUrl"
+        }
+    ])
 
-// };
-// function createIntern(){
-//     return inquirer
-//     .prompt([
-//         {
-//             type: "input",
-//             message: "Enter the name of the intern: ",
-//             name: "name"
-//         },
-//         {
-//             type: "number",
-//             message: "Enter the ID of the intern: ",
-//             name: "id"
-//         },
-//         {
-//             type: "input",
-//             message: "Enter the email of the intern: ",
-//             name: "email"
-//         },
-//         {
-//             type: "input",
-//             message: "Enter the school of the intern: ",
-//             name: "school"
-//         },
-//         {
-//             type: "input",
-//             message: "Enter an image url for the intern: ",
-//             name: "imageUrl"
-//         }
-//     ])
-
-// };
+};
 function againPrompt(){
     return inquirer.prompt([
         {
@@ -159,8 +155,9 @@ async function startApp(){
             firstStart = false;
             type = {role:"Manager"}
         }
-        let data = await createEmployee();
+        let data = await createManager(type);
 
+        console.log("superfun", data);
         switch(type.role){
             case 'Manager':
                 employees.push(new Manager(data.name, data.id, data.email, data.phoneOfficeNumber, data.imgUrl));

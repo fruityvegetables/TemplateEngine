@@ -30,8 +30,9 @@ function startPrompt(){
     //     return;
     // }
 }
+// this function is the logic to choose the specific functions
 function createEmployee(type){
-    console.log(type);
+    //console.log(type);
     if (type.role === "Manager"){
         return createManager();
     } else if (type.role === "Engineer") {
@@ -140,6 +141,7 @@ function createIntern(){
     ])
 
 };
+//if the user is done with the above functions, they can choose another function to use
 function againPrompt(){
     return inquirer.prompt([
         {
@@ -151,19 +153,23 @@ function againPrompt(){
 
     ]);
 }
+// this function
 async function startApp(){
     const employees = [];
+    // firstStart is used because the first employee to create is a Manager
     let firstStart = true;
     do {
         if(!firstStart){
+            //if it is not the first start, go back to startPrompt
             type = await startPrompt();
+            //only the first time it is ran, will it run this else statement
         } else {
             firstStart = false;
             type = {role:"Manager"}
         }
         let data = await createEmployee(type);
 
-        console.log("superfun", data);
+        // console.log("superfun", data);
         switch(type.role){
             case 'Manager':
                 employees.push(new Manager(data.name, data.id, data.email, data.phoneOfficeNumber, data.imgUrl));
